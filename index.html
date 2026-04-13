@@ -3,237 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopwazan | سوق المنتجات الرقمية</title>
+    <title>Shopwazan | متجر وزان للمنتجات الرقمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --main-color: #4f46e5; /* بنفسجي عصري للمتاجر الرقمية */
-            --dark-bg: #0f172a;
-            --card-bg: #ffffff;
-            --text-gray: #64748b;
+            --primary: #6366f1; /* Indigo */
+            --dark: #0f172a;
+            --card-dark: #1e293b;
+            --accent: #10b981; /* Emerald */
+            --text-gray: #94a3b8;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8fafc;
-            color: #1e293b;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--dark);
+            color: #f8fafc;
         }
 
-        /* الهيدر المطور */
+        /* القائمة العلوية */
         header {
-            background-color: var(--dark-bg);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid #334155;
         }
 
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #818cf8;
-            text-decoration: none;
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary); text-decoration: none; }
+
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-size: 0.9rem; transition: 0.3s; }
+        nav a:hover { color: var(--primary); }
+
+        /* زر واتساب العائم */
+        .whatsapp-float {
+            position: fixed; width: 60px; height: 60px;
+            bottom: 40px; right: 40px;
+            background-color: #25d366; color: #FFF;
+            border-radius: 50px; text-align: center;
+            font-size: 30px; box-shadow: 2px 2px 3px #999;
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: transform 0.3s;
         }
+        .whatsapp-float:hover { transform: scale(1.1); }
 
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover { color: white; }
-
-        .cart-icon {
-            color: white;
-            position: relative;
-            font-size: 1.2rem;
-        }
-
-        /* قسم الترحيب المطور */
+        /* قسم الترحيب Hero */
         .hero {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
+            padding: 100px 20px; text-align: center;
+            background: radial-gradient(circle at top, #1e1b4b 0%, #0f172a 100%);
         }
-
-        .hero h1 { font-size: 2.2rem; margin-bottom: 15px; }
-        .hero p { opacity: 0.9; font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 20px; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text-gray); max-width: 700px; margin: 0 auto; font-size: 1.1rem; }
 
         /* شبكة المنتجات */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .container { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        .card {
+            background: var(--card-dark); border-radius: 20px; padding: 25px;
+            border: 1px solid #334155; transition: 0.3s;
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .card i { color: var(--primary); margin-bottom: 20px; }
+        .price { font-size: 1.5rem; font-weight: bold; margin: 15px 0; color: white; }
+
+        .buy-btn {
+            background: var(--primary); color: white; border: none;
+            width: 100%; padding: 12px; border-radius: 10px;
+            cursor: pointer; font-weight: bold; font-size: 1rem;
         }
 
-        .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
+        /* نافذة السلة */
+        #cart-modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            z-index: 2000; justify-content: center; align-items: center;
         }
+        .modal-content { background: var(--card-dark); padding: 30px; border-radius: 20px; width: 90%; max-width: 450px; text-align: center; }
 
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
-        }
+        /* القوائم السفلية */
+        footer { background: #070b14; padding: 60px 5% 20px; border-top: 1px solid #334155; margin-top: 80px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-col h4 { margin-bottom: 20px; color: white; }
+        .footer-col ul { list-style: none; padding: 0; }
+        .footer-col ul li { margin-bottom: 10px; color: var(--text-gray); cursor: pointer; }
+        .footer-col ul li:hover { color: var(--primary); }
 
-        .product-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            transition: 0.3s;
-            border: 1px solid #e2e8f0;
-        }
-
-        .product-card:hover { transform: translateY(-10px); }
-
-        .product-img {
-            width: 100%;
-            height: 180px;
-            background-color: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-        }
-
-        .product-info { padding: 20px; }
-        .product-info h3 { margin: 0 0 10px; font-size: 1.1rem; }
-        .price { color: var(--main-color); font-weight: bold; font-size: 1.2rem; }
-
-        .btn-add {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: var(--main-color);
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-weight: 600;
-        }
-
-        /* الفوتر */
-        footer {
-            background: var(--dark-bg);
-            color: #94a3b8;
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 60px;
-        }
-
-        /* تحسين للموبايل */
-        @media (max-width: 768px) {
-            .nav-links { display: none; } /* سنحتاج قائمة جانبية لاحقاً */
-            .hero h1 { font-size: 1.8rem; }
-        }
+        @media (max-width: 768px) { nav { display: none; } }
     </style>
 </head>
 <body>
 
+    <a href="https://wa.me/212763841382" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <header>
         <a href="#" class="logo">Shopwazan</a>
-        <nav class="nav-links">
+        <nav>
             <a href="#">الرئيسية</a>
-            <a href="#">المنتجات</a>
-            <a href="#">حسابي</a>
+            <a href="#products">المنتجات</a>
+            <a href="#about">من نحن</a>
+            <a href="#contact">اتصل بنا</a>
         </nav>
-        <a href="#" class="cart-icon">
-            <i class="fa-solid fa-cart-shopping"></i>
-        </a>
+        <button onclick="toggleCart()" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem;">
+            <i class="fas fa-shopping-bag"></i> (<span id="cart-count">0</span>)
+        </button>
     </header>
 
     <section class="hero">
-        <h1>متجر وزان للمنتجات الرقمية</h1>
-        <p>تصفح وحمل أفضل القوالب، الدورات، والخدمات التقنية بضغطة زر.</p>
+        <h1>سوق المنتجات الرقمية الحديثة</h1>
+        <p>نقدم لك أفضل حلول الأتمتة، قوالب الويب، وخدمات التصميم التي تساعدك على تنمية مشروعك التقني بسرعة واحترافية.</p>
     </section>
 
-    <div class="container">
-        <div class="section-title">
-            <h2>الأكثر مبيعاً</h2>
-            <a href="#" style="color: var(--main-color); text-decoration: none;">عرض الكل</a>
-        </div>
-
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-img">
-                    <i class="fa-solid fa-code fa-3x"></i>
-                </div>
-                <div class="product-info">
-                    <h3>قالب Vercel احترافي</h3>
-                    <div class="price">150 درهم</div>
-                    <a href="#" class="btn-add">أضف للسلة</a>
-                </div>
+    <div class="container" id="products">
+        <div class="grid">
+            <div class="card">
+                <i class="fas fa-rocket fa-3x"></i>
+                <h3>نظام أتمتة n8n</h3>
+                <p>اربط تطبيقاتك ببعضها ووفر ساعات من العمل اليدوي.</p>
+                <div class="price">250 درهم</div>
+                <button class="buy-btn" onclick="addToCart('أتمتة n8n', 250)">أضف للسلة</button>
             </div>
 
-            <div class="product-card">
-                <div class="product-img">
-                    <i class="fa-solid fa-palette fa-3x"></i>
-                </div>
-                <div class="product-info">
-                    <h3>مجموعة تصاميم Canva</h3>
-                    <div class="price">80 درهم</div>
-                    <a href="#" class="btn-add">أضف للسلة</a>
-                </div>
+            <div class="card">
+                <i class="fas fa-layer-group fa-3x"></i>
+                <h3>قالب متجر Vercel</h3>
+                <p>قالب سريع جداً مهيأ لمحركات البحث SEO.</p>
+                <div class="price">150 درهم</div>
+                <button class="buy-btn" onclick="addToCart('قالب Vercel', 150)">أضف للسلة</button>
             </div>
 
-            <div class="product-card">
-                <div class="product-img">
-                    <i class="fa-solid fa-video fa-3x"></i>
-                </div>
-                <div class="product-info">
-                    <h3>دورة صناعة المحتوى بالـ AI</h3>
-                    <div class="price">299 درهم</div>
-                    <a href="#" class="btn-add">أضف للسلة</a>
-                </div>
+            <div class="card">
+                <i class="fas fa-wand-magic-sparkles fa-3x"></i>
+                <h3>تصاميم Canva PRO</h3>
+                <p>مجموعة قوالب جاهزة للتعديل السريع لبراندك.</p>
+                <div class="price">90 درهم</div>
+                <button class="buy-btn" onclick="addToCart('قوالب Canva', 90)">أضف للسلة</button>
             </div>
         </div>
     </div>
 
+    <div id="cart-modal">
+        <div class="modal-content">
+            <h2 style="color: var(--primary);">سلة الطلبات</h2>
+            <div id="cart-items" style="margin: 20px 0; text-align: right;">السلة فارغة</div>
+            <hr style="border-color: #334155;">
+            <div id="cart-total" style="font-size: 1.2rem; margin: 15px 0;">المجموع: 0 درهم</div>
+            <button class="buy-btn" onclick="checkout()" style="background: var(--accent);">تأكيد الطلب (واتساب)</button>
+            <button onclick="toggleCart()" style="background:none; border:none; color:var(--text-gray); margin-top:15px; cursor:pointer;">إلغاء</button>
+        </div>
+    </div>
+
     <footer>
-        <p>Shopwazan &copy; 2026 - مشروع المرحلة الثانية</p>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Shopwazan</h4>
+                <p style="color: var(--text-gray); font-size: 0.9rem;">وجهتكم الموثوقة للمنتجات الرقمية والخدمات التقنية المتطورة في المغرب.</p>
+            </div>
+            <div class="footer-col" id="about">
+                <h4>روابط هامة</h4>
+                <ul>
+                    <li>عن المتجر</li>
+                    <li>سياسة الاستخدام</li>
+                    <li>طرق الدفع</li>
+                </ul>
+            </div>
+            <div class="footer-col" id="contact">
+                <h4>تواصل معنا</h4>
+                <ul>
+                    <li><i class="fab fa-whatsapp"></i> 212763841382</li>
+                    <li><i class="fas fa-envelope"></i> admin@shopwazan.com</li>
+                </ul>
+            </div>
+        </div>
+        <p style="text-align: center; color: #475569; border-top: 1px solid #1e293b; padding-top: 20px;">
+            جميع الحقوق محفوظة لـ Mounir Shop &copy; 2026
+        </p>
     </footer>
-<script>
-    // الحصول على جميع الأزرار التي تحمل كلاس btn-add
-    const buttons = document.querySelectorAll('.btn-add');
 
-    buttons.forEach((button) => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault(); // منع الرابط من تحديث الصفحة
-            
-            // الحصول على اسم المنتج من الكارد
-            const productName = button.parentElement.querySelector('h3').innerText;
-            
-            // إظهار رسالة تأكيد
-            alert('تم إضافة ' + productName + ' إلى السلة بنجاح! (هذه ميزة تجريبية في المرحلة 2)');
-            
-            // تغيير نص الزر مؤقتاً
-            button.innerText = 'تمت الإضافة ✓';
-            button.style.background = '#22c55e'; // تغيير اللون للأخضر
-            
-            setTimeout(() => {
-                button.innerText = 'أضف للسلة';
-                button.style.background = '#4f46e5';
-            }, 2000);
-        });
-    });
-</script>
+    <script>
+        let cart = [];
+        let total = 0;
 
+        function addToCart(name, price) {
+            cart.push({name, price});
+            total += price;
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const cartItems = document.getElementById('cart-items');
+            if(cart.length === 0) {
+                cartItems.innerHTML = "السلة فارغة";
+            } else {
+                cartItems.innerHTML = cart.map(i => `<div>- ${i.name} (${i.price} درهم)</div>`).join('');
+            }
+            document.getElementById('cart-total').innerText = "المجموع: " + total + " درهم";
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function checkout() {
+            if(cart.length === 0) return alert("السلة فارغة!");
+            const message = `مرحباً Shopwazan، أود طلب المشتريات التالية:\n${cart.map(i => "• " + i.name).join('\n')}\n\nالمجموع الإجمالي: ${total} درهم.`;
+            window.open(`https://wa.me/212763841382?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    </script>
 </body>
 </html>
