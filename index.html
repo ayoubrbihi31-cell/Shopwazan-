@@ -209,6 +209,31 @@
     <footer>
         <p>Shopwazan &copy; 2026 - مشروع المرحلة الثانية</p>
     </footer>
+<script>
+    // الحصول على جميع الأزرار التي تحمل كلاس btn-add
+    const buttons = document.querySelectorAll('.btn-add');
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault(); // منع الرابط من تحديث الصفحة
+            
+            // الحصول على اسم المنتج من الكارد
+            const productName = button.parentElement.querySelector('h3').innerText;
+            
+            // إظهار رسالة تأكيد
+            alert('تم إضافة ' + productName + ' إلى السلة بنجاح! (هذه ميزة تجريبية في المرحلة 2)');
+            
+            // تغيير نص الزر مؤقتاً
+            button.innerText = 'تمت الإضافة ✓';
+            button.style.background = '#22c55e'; // تغيير اللون للأخضر
+            
+            setTimeout(() => {
+                button.innerText = 'أضف للسلة';
+                button.style.background = '#4f46e5';
+            }, 2000);
+        });
+    });
+</script>
 
 </body>
 </html>
